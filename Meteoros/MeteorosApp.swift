@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct MeteorosApp: App {
+    @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if hasCompletedOnboarding {
+                HomeView()
+            } else {
+                OnboardingView()
+            }
         }
     }
 }
