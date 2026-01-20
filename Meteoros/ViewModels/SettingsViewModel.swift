@@ -68,6 +68,7 @@ class SettingsViewModel: ObservableObject {
         UserDefaults.standard.removeObject(forKey: "totalPoints")
         UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
         UserDefaults.standard.removeObject(forKey: "lastSearchedCity")
+        UserDefaults.standard.removeObject(forKey: "weatherNotes")
         
         // Reset to default settings
         appSettings = AppSettings()

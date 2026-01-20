@@ -195,3 +195,24 @@ struct WeatherChallenge: Identifiable, Codable {
     }
 }
 
+// MARK: - Weather Note Model
+struct WeatherNote: Identifiable, Codable {
+    let id: UUID
+    let date: Date
+    var text: String
+    var cityName: String
+    var temperature: Double?
+    var weatherCondition: String?
+    var emoji: String?
+    
+    init(id: UUID = UUID(), date: Date = Date(), text: String, cityName: String, temperature: Double? = nil, weatherCondition: String? = nil, emoji: String? = nil) {
+        self.id = id
+        self.date = date
+        self.text = text
+        self.cityName = cityName
+        self.temperature = temperature
+        self.weatherCondition = weatherCondition
+        self.emoji = emoji
+    }
+}
+

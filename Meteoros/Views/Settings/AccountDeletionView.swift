@@ -54,8 +54,8 @@ struct AccountDeletionView: View {
                             VStack(alignment: .leading, spacing: 10) {
                                 DeletionItem(text: "All saved locations")
                                 DeletionItem(text: "Weather challenges and points")
+                                DeletionItem(text: "All weather notes")
                                 DeletionItem(text: "All app settings and preferences")
-                                DeletionItem(text: "Notification preferences")
                                 DeletionItem(text: "Onboarding completion status")
                             }
                             

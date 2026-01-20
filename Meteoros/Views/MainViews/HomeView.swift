@@ -10,9 +10,11 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var weatherViewModel = WeatherViewModel()
     @StateObject private var settingsViewModel = SettingsViewModel()
+    @StateObject private var notesViewModel = WeatherNotesViewModel()
     @State private var showingSettings = false
     @State private var showingForecastDetail = false
     @State private var showingCitySearch = false
+    @State private var showingNotes = false
     @State private var searchText = ""
     
     var body: some View {
@@ -117,6 +119,12 @@ struct HomeView: View {
                             )
                             .padding(.horizontal)
                         }
+                        
+                        // Weather Notes Section
+                        WeatherNotesCard(notesCount: notesViewModel.notes.count) {
+                            showingNotes = true
+                        }
+                        .padding(.horizontal)
                     }
                     .padding(.vertical)
                 }
@@ -127,6 +135,15 @@ struct HomeView: View {
             .navigationTitle("Meteoros")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        showingNotes = true
+                    }) {
+                        Image(systemName: "note.text")
+                            .foregroundColor(.white)
+                    }
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingSettings = true
@@ -146,6 +163,9 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showingCitySearch) {
                 CitySearchView(weatherViewModel: weatherViewModel, settingsViewModel: settingsViewModel, isPresented: $showingCitySearch)
+            }
+            .sheet(isPresented: $showingNotes) {
+                WeatherNotesView()
             }
         }
         .onAppear {
@@ -423,6 +443,49 @@ struct EmptyWeatherView: View {
 }
 
 // MARK: - City Search View
+// MARK: - Weather Notes Card
+struct WeatherNotesCard: View {
+    let notesCount: Int
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 15) {
+                HStack {
+                    Image(systemName: "note.text")
+                        .font(.system(size: 24))
+                        .foregroundColor(Color(hex: "01A2FF"))
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Weather Notes")
+                            .font(.system(size: 20, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white)
+                        
+                        Text("\(notesCount) \(notesCount == 1 ? "note" : "notes") saved")
+                            .font(.system(size: 14, weight: .regular, design: .rounded))
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.white.opacity(0.7))
+                }
+                
+                Text("Track your daily weather observations")
+                    .font(.system(size: 14, weight: .regular, design: .rounded))
+                    .foregroundColor(.white.opacity(0.8))
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.white.opacity(0.2))
+            )
+        }
+    }
+}
+
 struct CitySearchView: View {
     @ObservedObject var weatherViewModel: WeatherViewModel
     @ObservedObject var settingsViewModel: SettingsViewModel
